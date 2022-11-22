@@ -7,9 +7,9 @@ class Menu:
         self.manager = pygame_gui.UIManager(window_size)
         self.menu_surface = pygame.Surface(window_size)
         self.game_difficult = "Easy"
-        self.game_lvl = "1_lvl"
+        self.game_lvl = "Test_level"
         self.diff = ["Easy", "Medium", "Hard"]
-        self.levels = ["1_lvl", '2_lvl']
+        self.levels = ["Test_level"]  # self.levels = ["1_lvl", '2_lvl']
         self.help_info = ''
 
     def give_manager(self):
@@ -31,7 +31,7 @@ class Menu:
             manager=self.manager
         )
         self.level = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
-            options_list=self.levels, starting_option="1_lvl",
+            options_list=self.levels, starting_option="Test_level",
             relative_rect=pygame.Rect((size[0] // 2 - start_btn_width // 2, size[1] // 2 - start_btn_height),
                                       (start_btn_width, start_btn_height)),
             manager=self.manager,
