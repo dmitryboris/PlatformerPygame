@@ -32,7 +32,7 @@ difficult = {"Easy": (6, 6),
 tile_width = tile_height = 70
 
 
-def create_level(name_level, images, new_images):
+def create_level(name_level, images):
     fullname = os.path.join('maps', name_level)
     with open(fullname, mode="r", encoding="utf-8") as file:
         level_map = [line.strip() for line in file]
@@ -40,40 +40,12 @@ def create_level(name_level, images, new_images):
         for x in range(len(level_map[y])):
             if level_map[y][x] == ' ':
                 Air(x, y, tile_width, tile_height, air_group, all_sprites)
-            elif level_map[y][x] == '*':
-                Ground(x, y, tile_width, tile_height, new_images["*"], dead_block_group, all_sprites)
-            elif level_map[y][x] == '-':
-                Ground(x, y, tile_width, tile_height, new_images["-"], let_group, ground_group, all_sprites)
-            elif level_map[y][x] == '|':
-                Ground(x, y, tile_width, tile_height, new_images["|"], let_group, ground_group, all_sprites)
-            elif level_map[y][x] == '/':
-                Ground(x, y, tile_width, tile_height, new_images["/"], let_group, ground_group, all_sprites)
             elif level_map[y][x] == 'g':
-                Ground(x, y, tile_width, tile_height, new_images["g"], let_group, ground_group, all_sprites)
-            elif level_map[y][x] == 'q':
-                Ground(x, y, tile_width, tile_height, new_images["q"], let_group, ground_group, all_sprites)
-            elif level_map[y][x] == 'b':
-                BackGround(x, y, tile_width, tile_height, new_images["b"], background_group, all_sprites)
-            elif level_map[y][x] == 'e':
-                BackGround(x, y, tile_width, tile_height, new_images["e"], win_group, background_group, all_sprites)
-            elif level_map[y][x] == ')':
-                Air(x, y, tile_width, tile_height, air_group, all_sprites)
-                BackGround(x, y, tile_width, tile_height, new_images[")"], background_group, all_sprites)
-            elif level_map[y][x] == 't':
-                BackGround(x, y, tile_width, tile_height, new_images["b"], background_group, all_sprites)
-                ForeGround(x, y, tile_width, tile_height, new_images["t"], foreground_group, all_sprites)
-            elif level_map[y][x] == '1':
-                BackGround(x, y, tile_width, tile_height, new_images["b"], background_group, all_sprites)
-                ForeGround(x, y, tile_width, tile_height, new_images["1"], foreground_group, all_sprites)
-            elif level_map[y][x] == '2':
-                BackGround(x, y, tile_width, tile_height, new_images["b"], background_group, all_sprites)
-                ForeGround(x, y, tile_width, tile_height, new_images["2"], foreground_group, all_sprites)
+                Ground(x, y, tile_width, tile_height, images[-1], let_group, ground_group, all_sprites)
             elif level_map[y][x] == '@':
                 Air(x, y, tile_width, tile_height, air_group, all_sprites)
                 hero = Hero(x, y, tile_width, tile_height, images[0], images[7], snail_group, special_block_group,
-                            coin_group,
-                            coin_box_group,
-                            all_sprites, hero_group, all_sprites)
+                            coin_group, coin_box_group, all_sprites, hero_group, all_sprites)
             elif level_map[y][x] == 'w':
                 Water(x, y, tile_width, tile_height, images[5], water_group, all_sprites)
             elif level_map[y][x] == 'l':
@@ -90,7 +62,7 @@ def create_level(name_level, images, new_images):
                 Spike(x, y, tile_width, tile_height, images[8], spikes_group, all_sprites)
             elif level_map[y][x] == "r":
                 Air(x, y, tile_width, tile_height, air_group, all_sprites)
-                Rune(x, y, tile_width, tile_height, images[-2], rune_group, all_sprites)
+                Rune(x, y, tile_width, tile_height, images[-3], rune_group, all_sprites)
             elif level_map[y][x] == "S":
                 Air(x, y, tile_width, tile_height, air_group, all_sprites)
                 SpecialBlock(x, y, tile_width, tile_height, images[-1], let_group, special_block_group, all_sprites)
@@ -103,7 +75,7 @@ def get_images():
     jump_im = load_image('p1_jump.png', -1)
     walk_im = load_image('p1_walk11.png', -1)
     stand_im = load_image('p1_stand.png', -1)
-    hero_im = load_image('p1_stand.png', -1)
+    grass_im = load_image('grass.png', -1)
     brick = load_image('brickWall.png', -1)
     snail_image = load_image('snailWalk1.png', -1)
     fish_image = load_image('fishSwim1.png', -1)
@@ -115,43 +87,15 @@ def get_images():
     hero_images = [stand_im, walk_im, jump_im]
     rune_im = load_image("rune.png", -1)
     special = load_image("fake_brick.png", -1)
-    box = load_image("box.png", -1)
-    exit = load_image("exit.png", -1)
-    grass = load_image("grass.png")
-    dirt = load_image("dirt.png")
-    door1 = load_image("1door.png")
-    door2 = load_image("2door.png", -1)
-    torch = load_image("torch.png", -1)
-    right = load_image("right.png", -1)
-    brick1 = load_image("brick.png")
-    grass_1 = load_image("grass_1.png", -3)
-    grass_2 = load_image("grass_2.png", -4)
-    secret = load_image("secret.png")
-    dead_block = load_image("dead_block.png")
-    new_images = {
-        "*": dead_block,
-        "$": secret,
-        "|": grass_2,
-        "/": grass_1,
-        "-": brick1,
-        "b": box,
-        "e": exit,
-        "g": grass,
-        "q": dirt,
-        "1": door1,
-        "2": door2,
-        "t": torch,
-        ")": right
-    }
+
     images = [hero_images, brick, snail_image, fish_image, ladder_image, water_image, coin_box, coin_im, spike_im,
-              rune_im,
-              special]
+              rune_im, special, grass_im]
     for_hud = [load_image("no_hp.png", -1), load_image("half_hp.png", -1), load_image("hp.png", -1),
                load_image("o2.png"), coin_im]
     numbers = load_image("hud_0.png", -1), load_image("hud_1.png", -1), load_image("hud_2.png", -1), load_image(
         "hud_3.png", -1), load_image("hud_4.png", -1), load_image("hud_5.png", -1), load_image("hud_6.png", -1), \
-        load_image("hud_7.png", -1), load_image("hud_8.png", -1), load_image("hud_9.png", -1)
-    return win_game_im, end_game_im, images, for_hud, numbers, new_images
+              load_image("hud_7.png", -1), load_image("hud_8.png", -1), load_image("hud_9.png", -1)
+    return win_game_im, end_game_im, images, for_hud, numbers
 
 
 def main():
@@ -171,9 +115,9 @@ def main():
     lvl += ".txt"
 
     # загрузка картинок
-    win_game_im, end_game_im, images, for_hud, numbers, new_images = get_images()
+    win_game_im, end_game_im, images, for_hud, numbers = get_images()
 
-    hero, level_x, level_y = create_level(lvl, images, new_images)
+    hero, level_x, level_y = create_level(lvl, images)
     hud = Hud(*difficult[dif], hero, 0, 0, for_hud, numbers, hud_group, all_sprites)
     camera = Camera((level_x, level_y), WIDTH, HEIGHT)
 

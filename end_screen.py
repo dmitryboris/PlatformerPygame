@@ -1,8 +1,8 @@
 import pygame
-import pygame_gui
 from terminate import terminate
 
 SKIP_END_SCREEN = pygame.USEREVENT + 140
+
 
 class EndScreen:
     def __init__(self, image_end, screen, clock, fps):
