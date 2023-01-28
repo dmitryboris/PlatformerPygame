@@ -1,8 +1,7 @@
 import os
 import pygame
 from load_image import load_image
-from snail import Snail
-from fish import Fish
+from enemies import Snail, Fish
 from player import Hero
 from camera import Camera
 from hud import Hud
