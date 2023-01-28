@@ -1,8 +1,8 @@
 import pygame
-WINDOW_SIZE = WIDTH, HEIGHT = 1300, 800
 
 class Game:
-    def __init__(self):
+    def __init__(self, fps, size, ):
+
 
 
 

@@ -8,21 +8,20 @@ from camera import Camera
 from hud import Hud
 from items import Rune
 from tiles import *
-from pause_menu import PauseMenu
 from menu_cycle import menu_cycle
 from pause_cycle import pause_cycle
 from end_screen import EndScreen
 
-# основные переменные
+# main variables
 WINDOW_SIZE = WIDTH, HEIGHT = 1300, 800
 FPS = 60
-RELOAD_HIT = pygame.USEREVENT + 76  # перезарядка получения урона
-RELOAD_o2 = pygame.USEREVENT + 77  # перезарядка получения кислорода
-RELOAD__o2 = pygame.USEREVENT + 78  # перезарядка отнимания кислорода
+RELOAD_HIT = pygame.USEREVENT + 76  # cooldown of taking damage
+RELOAD_o2 = pygame.USEREVENT + 77
+RELOAD__o2 = pygame.USEREVENT + 78
 REPEAT_MUSIC = pygame.USEREVENT + 1
 RUNE_MOVES = pygame.USEREVENT + 99
 RELOAD__05 = pygame.USEREVENT + 111
-FRAME_CHANGE = pygame.USEREVENT + 2  # смена кадра
+FRAME_CHANGE = pygame.USEREVENT + 2
 
 difficult = {"Easy": (6, 6),
              "Medium": (4, 6),
@@ -33,6 +32,7 @@ tile_width = tile_height = 70
 
 
 def create_level(name_level, images):
+    hero, x, y = None, None, None
     fullname = os.path.join('maps', name_level)
     with open(fullname, mode="r", encoding="utf-8") as file:
         level_map = [line.strip() for line in file]
@@ -94,27 +94,27 @@ def get_images():
                load_image("o2.png"), coin_im]
     numbers = load_image("hud_0.png", -1), load_image("hud_1.png", -1), load_image("hud_2.png", -1), load_image(
         "hud_3.png", -1), load_image("hud_4.png", -1), load_image("hud_5.png", -1), load_image("hud_6.png", -1), \
-              load_image("hud_7.png", -1), load_image("hud_8.png", -1), load_image("hud_9.png", -1)
+        load_image("hud_7.png", -1), load_image("hud_8.png", -1), load_image("hud_9.png", -1)
     return win_game_im, end_game_im, images, for_hud, numbers
 
 
 def main():
     pygame.init()
-
+    pygame.display.set_caption('platformer')
     screen = pygame.display.set_mode(WINDOW_SIZE)
 
     clock = pygame.time.Clock()
 
-    # музыка
+    # music
     pygame.mixer.music.load('data/song.ogg')
     pygame.mixer.music.play()
     pygame.time.set_timer(REPEAT_MUSIC, 60000)
 
-    # загрузка меню
+    # download menu
     dif, lvl = menu_cycle(clock, FPS, WINDOW_SIZE, screen)
     lvl += ".txt"
 
-    # загрузка картинок
+    # download images
     win_game_im, end_game_im, images, for_hud, numbers = get_images()
 
     hero, level_x, level_y = create_level(lvl, images)
@@ -127,14 +127,15 @@ def main():
     wat_down = False
     is_paused = False
     running = True
+    hero_status, is_win = None, None
 
     # timers
     pygame.time.set_timer(RUNE_MOVES, 140)
     pygame.time.set_timer(FRAME_CHANGE, 90)
     while running:
-        may_get_damaged = False  # перезарядка получения урона
-        is_time_o2 = False  # перезарядка получения кислорода
-        is_time__o2 = False  # перезарядка отнимания кислорода
+        may_get_damaged = False
+        is_time_o2 = False
+        is_time__o2 = False
         is_time__05 = False
         rune_event = False
 
@@ -247,15 +248,14 @@ def main():
 
 special_block_group = pygame.sprite.Group()
 rune_group = pygame.sprite.Group()
-coin_box_group = pygame.sprite.Group()  # если монеты будут просто спавниться на земле то эта группа не нужна
-# это является и препятствием и отдельной группой
+coin_box_group = pygame.sprite.Group()
 ground_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 hero_group = pygame.sprite.Group()
 air_group = pygame.sprite.Group()
 water_group = pygame.sprite.Group()
-let_group = pygame.sprite.Group()  # стены
+let_group = pygame.sprite.Group()
 ladder_group = pygame.sprite.Group()
 spikes_group = pygame.sprite.Group()
 items_group = pygame.sprite.Group()
